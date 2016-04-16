@@ -55,8 +55,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         mTabLayout.setOnTabSelectedListener(this);
 
-        Intent intent = new Intent(this, VideoRecordingActivity.class);
-        startActivity(intent);
+
 
     }
 
