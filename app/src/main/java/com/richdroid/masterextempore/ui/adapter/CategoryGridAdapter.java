@@ -12,14 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.richdroid.masterextempore.R;
+import com.richdroid.masterextempore.utils.Utilities;
+
+import static com.richdroid.masterextempore.utils.Utilities.categoryList;
 
 public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapter.ListViewHolder> {
 
   private static final String CATEGORY = "category";
-  private String categoryList[] = {
-      "Internet", "Social", "Motivational", "Polictics", "Humour", "History",
-      "News and Infotainment"
-  };
+
   private int categoryListImage[] = {
       R.drawable.internet, R.drawable.social, R.drawable.motivation, R.drawable.politics,
       R.drawable.humour, R.drawable.history, R.drawable.news
@@ -48,7 +48,7 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
     @Override public void onClick(View v) {
       int position = getAdapterPosition();
       SharedPreferences.Editor editor = mPref.edit();
-      if(mPref.getBoolean(categoryList[position], false)){
+      if(mPref.getBoolean(Utilities.categoryList[position], false)){
         this.mTextLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blacktranslucent));
         editor.putBoolean(categoryList[position], false);
       }else{

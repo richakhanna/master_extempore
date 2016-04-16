@@ -14,6 +14,11 @@ public class Utilities {
   private static String PAGE1 = "Try";
   private static String PAGE2 = "Attempted";
 
+  public static String categoryList[] = {
+      "Internet", "Social", "Motivational", "Polictics", "Humour", "History",
+      "News and Infotainment"
+  };
+
   public static String getPageTitle(Context context, int position) {
     switch (position) {
       case 0:

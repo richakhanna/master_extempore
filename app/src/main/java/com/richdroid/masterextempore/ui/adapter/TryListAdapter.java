@@ -75,6 +75,10 @@ public class TryListAdapter extends RecyclerView.Adapter<TryListAdapter.ListView
   }
 
   @Override public int getItemCount() {
-    return mTopicList.size();
+    if (mTopicList == null || mTopicList.size() == 0) {
+      return mTopicList.size();
+    } else {
+      return mTopicList.size();
+    }
   }
 }
