@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,9 +15,11 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.richdroid.masterextempore.model.TopicLists;
 import com.richdroid.masterextempore.utils.Utilities;
+
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import org.json.JSONObject;
 
 /**
  * Created by richa.khanna on 3/23/16.
