@@ -46,10 +46,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     mViewPager.setAdapter(mSectionsPagerAdapter);
 
     mTabLayout.setOnTabSelectedListener(this);
-
-
-
-
   }
 
   @Override public void onTabSelected(TabLayout.Tab tab) {
