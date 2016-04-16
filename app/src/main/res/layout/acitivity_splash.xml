@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1abc9c"
     android:orientation="vertical"
     android:weightSum="3">
 
@@ -35,25 +36,14 @@
 
         <ImageView
             android:id="@+id/splash_image"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
+            android:layout_width="170dp"
+            android:layout_height="100dp"
             android:layout_above="@+id/title"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="@drawable/history"
+            android:background="@drawable/lid"
             android:gravity="bottom|center_horizontal"
-            android:text="Lideo"
-            android:textColor="@color/colorAccent"
-            android:textSize="40dp" />
+            android:text="Lideo" />
 
-        <TextView
-            android:id="@id/title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:gravity="bottom|center_horizontal"
-            android:text="Lideo"
-            android:textColor="@color/colorAccent"
-            android:textSize="40dp" />
     </LinearLayout>
 
     <LinearLayout
