@@ -1,5 +1,6 @@
 package com.richdroid.masterextempore.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mTabLayout.setOnTabSelectedListener(this);
+
+        Intent intent = new Intent(this, VideoRecordingActivity.class);
+        startActivity(intent);
 
     }
 
