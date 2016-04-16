@@ -68,6 +68,7 @@ public class SplashActivity extends AppCompatActivity
         signInButton.setScopes(gso.getScopeArray());
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.skip).setOnClickListener(this);
 
         mRunnable = new Runnable() {
 
@@ -95,9 +96,9 @@ public class SplashActivity extends AppCompatActivity
     }
 
     private void start() {
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void signIn() {
