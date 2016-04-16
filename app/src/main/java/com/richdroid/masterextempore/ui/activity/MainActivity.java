@@ -16,7 +16,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
   private static final String TAG = MainActivity.class.getSimpleName();
-  private static final int NUM_PAGES = 2;
+  private static final int NUM_PAGES = 3;
   private List<ContactDetail> mDatasetList;
   private DataManager mDataMan;
   private ProgressBarUtil mProgressBar;

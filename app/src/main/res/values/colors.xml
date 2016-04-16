@@ -9,6 +9,10 @@
     <color name="blue">#1919ff</color>
 
     <color name="green">#4CA961</color>
+
+    <color name="greentranslucent">#994CA961</color>
+    <color name="blacktranslucent">#99000000</color>
+
     <color name="light_green">#27ae60</color>
 
     <color name="white">#FBFBFB</color>

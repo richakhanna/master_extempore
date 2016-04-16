@@ -10,8 +10,9 @@ import java.io.File;
  */
 public class Utilities {
 
-  private static String PAGE0 = "Master";
-  private static String PAGE1 = "Attempted";
+  private static String PAGE0 = "Category";
+  private static String PAGE1 = "Try";
+  private static String PAGE2 = "Attempted";
 
   public static String getPageTitle(Context context, int position) {
     switch (position) {
@@ -19,6 +20,8 @@ public class Utilities {
         return PAGE0;
       case 1:
         return PAGE1;
+      case 2:
+        return PAGE2;
     }
     return null;
   }

@@ -3,6 +3,7 @@ package com.richdroid.masterextempore.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import com.richdroid.masterextempore.ui.fragment.CategoryFragement;
 import com.richdroid.masterextempore.ui.fragment.PlaceholderFragment;
 import com.richdroid.masterextempore.ui.fragment.VideoListFragment;
 
@@ -15,8 +16,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override public Fragment getItem(int position) {
       switch (position) {
         case 0:
-          return PlaceholderFragment.newInstance(position);
+          return CategoryFragement.newInstance(position);
         case 1:
+          return PlaceholderFragment.newInstance(position);
+        case 2:
           return VideoListFragment.newInstance(position);
       }
       return null;
