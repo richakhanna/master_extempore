@@ -8,39 +8,48 @@ import java.io.File;
 /**
  * Created by yehya khaled on 3/3/2015.
  */
-public class Utilities
-{
+public class Utilities {
 
-    public static String getPageTitle(Context context,int position)
-    {
-        return "TAB"+position;
+  private static String PAGE0 = "Master";
+  private static String PAGE1 = "Attempted";
+
+  public static String getPageTitle(Context context, int position) {
+    switch (position) {
+      case 0:
+        return PAGE0;
+      case 1:
+        return PAGE1;
     }
+    return null;
+  }
 
+  public static boolean isNetworkAvailable(Context context) {
+    ConnectivityManager cm =
+        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo info = cm.getActiveNetworkInfo();
+    if (info == null) return false;
+    NetworkInfo.State network = info.getState();
+    return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
+  }
 
-    public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
-        if (info == null) return false;
-        NetworkInfo.State network = info.getState();
-        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
+  public static String getApplicationDirectory(Context context) {
+    boolean isSdPresent = android.os.Environment.getExternalStorageState()
+        .equals(android.os.Environment.MEDIA_MOUNTED);
+    if (isSdPresent) {
+
+      return context.getExternalFilesDir(null).toString();
+    } else {
+      return null;
     }
+  }
 
-    public static String getApplicationDirectory(Context context) {
-        boolean isSdPresent = android.os.Environment.getExternalStorageState().equals(
-            android.os.Environment.MEDIA_MOUNTED);
-        if(isSdPresent) {
+  public static boolean isExternalStorageAvailable() {
+    return android.os.Environment.getExternalStorageState()
+        .equals(android.os.Environment.MEDIA_MOUNTED);
+  }
 
-            return context.getExternalFilesDir(null).toString();
-        } else {
-            return null;
-        }
-    }
-    public static boolean isExternalStorageAvailable() {
-        return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-    }
-    public static boolean doesFileExist(String filePath) {
-        File file = new File(filePath);
-        return file.exists();
-    }
-
+  public static boolean doesFileExist(String filePath) {
+    File file = new File(filePath);
+    return file.exists();
+  }
 }
