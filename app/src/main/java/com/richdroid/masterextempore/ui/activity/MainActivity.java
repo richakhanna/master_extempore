@@ -1,97 +1,67 @@
 package com.richdroid.masterextempore.ui.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.richdroid.masterextempore.R;
 import com.richdroid.masterextempore.app.AppController;
-import com.richdroid.masterextempore.model.AllContactResponse;
 import com.richdroid.masterextempore.model.ContactDetail;
 import com.richdroid.masterextempore.network.DataManager;
-import com.richdroid.masterextempore.network.DataRequester;
-import com.richdroid.masterextempore.ui.adapter.ContactDetailAdapter;
+import com.richdroid.masterextempore.ui.adapter.SectionsPagerAdapter;
 import com.richdroid.masterextempore.utils.ProgressBarUtil;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import com.richdroid.masterextempore.utils.Utilities;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private List<ContactDetail> mDatasetList;
-    private DataManager mDataMan;
-    private ProgressBarUtil mProgressBar;
+  private static final String TAG = MainActivity.class.getSimpleName();
+  private static final int NUM_PAGES = 2;
+  private List<ContactDetail> mDatasetList;
+  private DataManager mDataMan;
+  private ProgressBarUtil mProgressBar;
+  private SectionsPagerAdapter mSectionsPagerAdapter;
+  private ViewPager mViewPager;
+  private TabLayout mTabLayout;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-        AppController app = ((AppController) getApplication());
-        mDataMan = app.getDataManager();
+    //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    //setSupportActionBar(toolbar);
 
-        mProgressBar = new ProgressBarUtil(this);
+    AppController app = ((AppController) getApplication());
+    mDataMan = app.getDataManager();
+    mTabLayout = (TabLayout) findViewById(R.id.tabs);
+    mViewPager = (ViewPager) findViewById(R.id.container);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mDatasetList = new ArrayList<ContactDetail>();
-
-        Log.v(TAG, "Calling : get Contact Detail Api");
-        mProgressBar.show();
-        mDataMan.getAllContacts(
-                new WeakReference<DataRequester>(mContactDetailRequester), TAG);
-
-        // specify an adapter
-        mAdapter = new ContactDetailAdapter(this, mDatasetList);
-        mRecyclerView.setAdapter(mAdapter);
-
+    for (int pos = 0; pos < NUM_PAGES; pos++) {
+      mTabLayout.addTab(mTabLayout.newTab().setText(Utilities.getPageTitle(this, pos)));
     }
+    mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-    private DataRequester mContactDetailRequester = new DataRequester() {
+    // Set up the ViewPager with the sections adapter.
+    mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+    mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        @Override
-        public void onFailure(Throwable error) {
-            if (isFinishing()) {
-                return;
-            }
+    mTabLayout.setOnTabSelectedListener(this);
 
-            mProgressBar.hide();
-            Log.v(TAG, "Failure : contact detail onFailure");
-        }
 
-        @Override
-        public void onSuccess(Object respObj) {
-            if (isFinishing()) {
-                return;
-            }
 
-            mProgressBar.hide();
-            Log.v(TAG, "Success : Contact detail Data : " + new Gson().toJson(respObj).toString());
-            AllContactResponse response = (AllContactResponse) respObj;
 
-            if (response != null && response.getAllContactDetails() != null && response.getAllContactDetails().size() > 0) {
-                List<ContactDetail> contactDetailList = response.getAllContactDetails();
-                for (ContactDetail contact : contactDetailList) {
-                    mDatasetList.add(contact);
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-    };
+  }
 
+  @Override public void onTabSelected(TabLayout.Tab tab) {
+    mViewPager.setCurrentItem(tab.getPosition());
+    mSectionsPagerAdapter.notifyDataSetChanged();
+  }
+
+  @Override public void onTabUnselected(TabLayout.Tab tab) {
+
+  }
+
+  @Override public void onTabReselected(TabLayout.Tab tab) {
+
+  }
 }
