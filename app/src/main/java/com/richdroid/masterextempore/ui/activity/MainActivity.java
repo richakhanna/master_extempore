@@ -1,6 +1,5 @@
 package com.richdroid.masterextempore.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.richdroid.masterextempore.R;
 import com.richdroid.masterextempore.app.AppController;
 import com.richdroid.masterextempore.model.ContactDetail;
@@ -16,7 +14,6 @@ import com.richdroid.masterextempore.network.DataManager;
 import com.richdroid.masterextempore.ui.adapter.SectionsPagerAdapter;
 import com.richdroid.masterextempore.utils.ProgressBarUtil;
 import com.richdroid.masterextempore.utils.Utilities;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -98,4 +95,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return super.onOptionsItemSelected(item);
     }
 
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

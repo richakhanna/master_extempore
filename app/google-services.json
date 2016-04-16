@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "api-project-886144289774",
+    "project_number": "886144289774",
+    "name": "API Project"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886144289774:android:6199b342df718f27",
+        "client_id": "android:com.richdroid.masterextempore",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.richdroid.masterextempore",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886144289774-1cf0suocc60o24stlhoam7hmj11s1fq7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.richdroid.masterextempore",
+            "certificate_hash": "25112E09C00C16178CBB3B7AA2380060FCBC1FD2"
+          }
+        },
+        {
+          "client_id": "886144289774-gnl883bj9m08nh0lnbkndhqfh3p9sjl2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

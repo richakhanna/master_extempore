@@ -14,6 +14,7 @@
     <color name="blacktranslucent">#99000000</color>
     <color name="blackDark">#000000</color>
     <color name="black">#000000</color>
+    <color name="blackText">#3E3D43</color>
 
 
     <color name="light_green">#27ae60</color>
