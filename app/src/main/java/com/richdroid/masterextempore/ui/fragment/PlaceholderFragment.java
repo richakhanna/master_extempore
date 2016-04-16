@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,12 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
     mAdapter = new TryListAdapter(getActivity(), mTopicList);
     mRecyclerView.setAdapter(mAdapter);
 
+
+    return rootView;
+  }
+
+  @Override public void onResume() {
+    super.onResume();
     swipeRefreshLayout.post(new Runnable() {
       @Override public void run() {
         swipeRefreshLayout.setRefreshing(true);
@@ -67,7 +74,6 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         fetchTopicsLists();
       }
     });
-    return rootView;
   }
 
   private void fetchTopicsLists() {
@@ -96,5 +102,16 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
 
   @Override public void onRefresh() {
     fetchTopicsLists();
+  }
+
+  @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+    super.setUserVisibleHint(isVisibleToUser);
+    Log.d(TAG, "Called again");
+    if(getActivity() == null){
+      return;
+    }
+    if(isVisibleToUser) {
+      fetchTopicsLists();
+    }
   }
 }
