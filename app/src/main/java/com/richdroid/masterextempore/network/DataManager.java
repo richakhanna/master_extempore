@@ -150,4 +150,44 @@ public class DataManager {
     public void addToRequestQueueInDM(Request request, String tag) {
         addToRequestQueue(request, tag);
     }
+  public void postUserData(final WeakReference<DataRequester> wRequester, JSONObject obj,String tag) {
+    Log.v(TAG, "Api call : get topic lists");
+    final SharedPreferences pref =
+            PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
+
+    Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+      @Override public void onResponse(JSONObject jsonObject) {
+        Log.v(TAG, "Success : get topic returned a response");
+        SharedPreferences.Editor editor = pref.edit();
+        try {
+          editor.putString("id", jsonObject.getString("id"));
+        }catch (Exception e){
+
+        }
+        editor.commit();
+        DataRequester req = null;
+        if (wRequester != null) {
+          req = wRequester.get();
+        }
+
+      }
+    };
+
+    Response.ErrorListener errorListener = new Response.ErrorListener() {
+      @Override public void onErrorResponse(VolleyError volleyError) {
+        DataRequester req = null;
+        if (wRequester != null) {
+          req = wRequester.get();
+        }
+        if (req != null) {
+          req.onFailure(volleyError);
+        }
+      }
+    };
+
+    CustomJsonObjectRequest request =
+            new CustomJsonObjectRequest(Request.Method.POST, BASE_URL, obj, responseListener,
+                    errorListener);
+    addToRequestQueue(request, tag);
+  }
 }

@@ -1,6 +1,5 @@
 package com.richdroid.masterextempore.ui.activity;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,14 +21,21 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.richdroid.masterextempore.R;
+import com.richdroid.masterextempore.app.AppController;
+import com.richdroid.masterextempore.network.DataRequester;
+import com.richdroid.masterextempore.utils.Utilities;
+
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by harshikesh.kumar on 16/04/16.
  */
 public class SplashActivity extends AppCompatActivity
-        implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+        implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final long SPLASH_TIME = 3000;
+    private static final long SPLASH_TIME = 2000;
     private static final int RC_SIGN_IN = 2;
     private static final String TAG = SplashActivity.class.getSimpleName();
     private ImageView image;
@@ -38,6 +43,7 @@ public class SplashActivity extends AppCompatActivity
     private Handler mHandler;
     private GoogleApiClient mGoogleApiClient;
     private AccountManager mAccountManager;
+    private AppController mDataMan;
     //AIzaSyB8IO0yqYVzF2kn9Elqt-Xi9Hv7c8OVb7Q
 
     @Override
@@ -45,11 +51,6 @@ public class SplashActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_splash);
         image = (ImageView) findViewById(R.id.splash_image);
-        mAccountManager = AccountManager.get(this);
-        Account[] accounts = mAccountManager.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-        if (accounts.length > 0) {
-            start();
-        }
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1.0f, 1.2f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(image, "scaleY", 1.0f, 1.2f);
 
@@ -63,21 +64,21 @@ public class SplashActivity extends AppCompatActivity
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        mGoogleApiClient.registerConnectionCallbacks(this);
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.skip).setOnClickListener(this);
-
-        mRunnable = new Runnable() {
-
-            public void run() {
-                start();
-            }
-        };
-        mHandler = new Handler();
-        mHandler.postDelayed(mRunnable, SPLASH_TIME);
+//        mRunnable = new Runnable() {
+//
+//            public void run() {
+//                //  start();
+//            }
+//        };
+//        mHandler = new Handler();
+//        mHandler.postDelayed(mRunnable, SPLASH_TIME);
     }
 
     @Override
@@ -120,11 +121,32 @@ public class SplashActivity extends AppCompatActivity
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
+            findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
             String email = result.getSignInAccount().getEmail();
+            String userName = result.getSignInAccount().getDisplayName();
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("name", userName);
+                obj.put("email", email);
+            }catch (Exception e){
+
+            }
+            mDataMan = ((AppController)getApplication());
+            mDataMan.getDataManager().postUserData(new WeakReference<DataRequester>(new DataRequester() {
+                @Override
+                public void onFailure(Throwable error) {
+                    Log.d(TAG, "Data:" + "Failure" );
+                }
+
+                @Override
+                public void onSuccess(Object respObj) {
+                    Log.d(TAG, "Data:" + "Success" );
+                }
+            }),obj,TAG);
+
             Log.d(TAG, "Google:" + "Login " + email);
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_SHORT).show();
-
             start();
         } else {
             // Signed out, show unauthenticated UI.
@@ -136,7 +158,11 @@ public class SplashActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                signIn();
+                if(Utilities.isNetworkAvailable(getApplicationContext())) {
+                    signIn();
+                }else {
+                    Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.skip:
                 start();
@@ -148,13 +174,32 @@ public class SplashActivity extends AppCompatActivity
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(Status status) {
-                // ...
             }
         });
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "On Conn failed");
+    }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "Onconnectd");
+        findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
+        mRunnable = new Runnable() {
+
+            public void run() {
+                  start();
+            }
+        };
+        mHandler = new Handler();
+        mHandler.postDelayed(mRunnable, SPLASH_TIME);
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "conectionn suspended ");
     }
 }

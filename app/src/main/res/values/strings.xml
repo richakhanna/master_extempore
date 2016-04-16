@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MasterExtempore</string>
+    <string name="app_name">Lideo</string>
     <string name="delete_contact">Delete Contact</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
