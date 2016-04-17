@@ -8,8 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.richdroid.masterextempore.R;
 import com.richdroid.masterextempore.model.Topic;
@@ -40,7 +43,8 @@ public class TryListAdapter extends RecyclerView.Adapter<TryListAdapter.ListView
             this.mTopicName = (TextView) itemView.findViewById(R.id.title_text_view);
             this.mDetailText = (TextView) itemView.findViewById(R.id.details_text_view);
             this.mContainer = (LinearLayout) itemView.findViewById(R.id.linear_links);
-            itemView.setOnClickListener(this);
+            this.mDetailText.setOnClickListener(this);
+            this.mTopicName.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
 
@@ -48,12 +52,29 @@ public class TryListAdapter extends RecyclerView.Adapter<TryListAdapter.ListView
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            String topicCategory = mTopicList.get(position).getCategory();
-            String topicId = mTopicList.get(position).getId();
-            Intent intent = new Intent(mContext, VideoRecordingActivity.class);
-            intent.putExtra(CATEGORY, topicCategory);
-            intent.putExtra(TOPIC_ID, topicId);
-            mContext.startActivity(intent);
+
+            switch (v.getId()) {
+                case R.id.title_text_view:
+                    String topicCategory = mTopicList.get(position).getCategory();
+                    String topicId = mTopicList.get(position).getId();
+                    Intent intent = new Intent(mContext, VideoRecordingActivity.class);
+                    intent.putExtra(CATEGORY, topicCategory);
+                    intent.putExtra(TOPIC_ID, topicId);
+                    mContext.startActivity(intent);
+                    break;
+                case R.id.details_text_view:
+                    WebView mWebview = new WebView(mContext);
+                    mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
+                    mWebview.setWebViewClient(new WebViewClient() {
+                        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                            Toast.makeText(mContext, description, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    if (mTopicList.get(position).getLinks() != null && mTopicList.get(position).getLinks().get(0) != "")
+                        mWebview.loadUrl(mTopicList.get(position).getLinks().get(0));
+                    break;
+            }
+
 
             //SharedPreferences.Editor editor = mPref.edit();
             //if(mPref.getBoolean(categoryList[position], false)){
@@ -94,7 +115,7 @@ public class TryListAdapter extends RecyclerView.Adapter<TryListAdapter.ListView
         viewHolder.mTopicName.setText(mTopicList.get(position).getTopicName());
         if (mTopicList.get(position).getLinks() != null
                 && mTopicList.get(position).getLinks().size() > 0) {
-            viewHolder.mDetailText.setText(mTopicList.get(position).getLinks().get(0));
+            viewHolder.mDetailText.setText("Info : " + mTopicList.get(position).getLinks().get(0));
         } else {
             viewHolder.mContainer.setVisibility(View.INVISIBLE);
         }
