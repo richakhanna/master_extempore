@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.richdroid.masterextempore.R;
 import com.richdroid.masterextempore.app.AppController;
+import com.richdroid.masterextempore.model.SpacesItemDecoration;
 import com.richdroid.masterextempore.model.Topic;
 import com.richdroid.masterextempore.model.TopicLists;
 import com.richdroid.masterextempore.network.DataManager;
@@ -58,6 +59,7 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(2));
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         mTopicList = new ArrayList<>();
