@@ -2,6 +2,7 @@ package com.richdroid.masterextempore.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -193,7 +195,11 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
                 final String BASE_URL = "http://172.20.172.49:8989";
                 // /users/{userId}/topics/{topicId}/videos?filename=testVideoName
-                String userId = "5711e13ed4c6f0df5adf8a17";
+
+
+                SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+                String userId = mPref.getString("id", "5713129fe07be96b5dac8d7d");
+
                 String paramsUrl = BASE_URL + "/users/" + userId + "/topics/" + topicId + "/videos?filename=" + videoFileName;
                 MultipartRequest multipartRequest = new MultipartRequest(paramsUrl, null, mimeType, multipartBody, new Response.Listener<NetworkResponse>() {
                     @Override
