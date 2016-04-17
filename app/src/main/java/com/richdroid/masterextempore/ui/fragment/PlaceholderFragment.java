@@ -59,7 +59,7 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(2));
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(4));
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         mTopicList = new ArrayList<>();
