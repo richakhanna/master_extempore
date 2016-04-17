@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.richdroid.masterextempore.R;
-import com.richdroid.masterextempore.model.AttemptedTopic;
+import com.richdroid.masterextempore.model.Topic;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class AttemptedListAdpater extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<AttemptedTopic> mDataSetList;
+    private final List<Topic> mDataSetList;
     private final Context mContext;
     private int lastAnimatedItemPosition = -1;
 
@@ -48,7 +48,7 @@ public class AttemptedListAdpater extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public AttemptedListAdpater(Context context, List<AttemptedTopic> datasetList) {
+    public AttemptedListAdpater(Context context, List<Topic> datasetList) {
         mContext = context;
         mDataSetList = datasetList;
     }
@@ -66,7 +66,7 @@ public class AttemptedListAdpater extends RecyclerView.Adapter<RecyclerView.View
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         ListViewHolder viewHolder = (ListViewHolder) holder;
-        viewHolder.mTopicName.setText(mDataSetList.get(position).getName());
+        viewHolder.mTopicName.setText(mDataSetList.get(position).getTopicName());
 
         setEnterAnimation(viewHolder.mContainer, position);
     }

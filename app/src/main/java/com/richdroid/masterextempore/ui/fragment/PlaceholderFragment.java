@@ -63,8 +63,6 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         mTopicList = new ArrayList<>();
         mAdapter = new TryListAdapter(getActivity(), mTopicList);
         mRecyclerView.setAdapter(mAdapter);
-
-
         return rootView;
     }
 

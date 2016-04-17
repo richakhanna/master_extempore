@@ -150,44 +150,99 @@ public class DataManager {
     public void addToRequestQueueInDM(Request request, String tag) {
         addToRequestQueue(request, tag);
     }
-  public void postUserData(final WeakReference<DataRequester> wRequester, JSONObject obj,String tag) {
-    Log.v(TAG, "Api call : get topic lists");
-    final SharedPreferences pref =
-            PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
 
-    Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-      @Override public void onResponse(JSONObject jsonObject) {
-        Log.v(TAG, "Success : get topic returned a response");
-        SharedPreferences.Editor editor = pref.edit();
-        try {
-          editor.putString("id", jsonObject.getString("id"));
-        }catch (Exception e){
+    public void postUserData(final WeakReference<DataRequester> wRequester, JSONObject obj, String tag) {
+        Log.v(TAG, "Api call : get topic lists");
+        final SharedPreferences pref =
+                PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
 
-        }
-        editor.commit();
-        DataRequester req = null;
-        if (wRequester != null) {
-          req = wRequester.get();
-        }
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.v(TAG, "Success : get topic returned a response");
+                SharedPreferences.Editor editor = pref.edit();
+                try {
+                    editor.putString("id", jsonObject.getString("id"));
+                } catch (Exception e) {
 
-      }
-    };
+                }
+                editor.commit();
+                DataRequester req = null;
+                if (wRequester != null) {
+                    req = wRequester.get();
+                }
 
-    Response.ErrorListener errorListener = new Response.ErrorListener() {
-      @Override public void onErrorResponse(VolleyError volleyError) {
-        DataRequester req = null;
-        if (wRequester != null) {
-          req = wRequester.get();
-        }
-        if (req != null) {
-          req.onFailure(volleyError);
-        }
-      }
-    };
+            }
+        };
 
-    CustomJsonObjectRequest request =
-            new CustomJsonObjectRequest(Request.Method.POST, BASE_URL, obj, responseListener,
-                    errorListener);
-    addToRequestQueue(request, tag);
-  }
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                DataRequester req = null;
+                if (wRequester != null) {
+                    req = wRequester.get();
+                }
+                if (req != null) {
+                    req.onFailure(volleyError);
+                }
+            }
+        };
+
+        CustomJsonObjectRequest request =
+                new CustomJsonObjectRequest(Request.Method.POST, BASE_URL, obj, responseListener,
+                        errorListener);
+        addToRequestQueue(request, tag);
+    }
+
+
+    public void getAttemptedTopicList(final WeakReference<DataRequester> wRequester, String tag) {
+        Log.v(TAG, "Api call : get attempted topic list");
+        JSONObject obj = new JSONObject();
+
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.v(TAG, "Success : get topic returned a response");
+                DataRequester req = null;
+                if (wRequester != null) {
+                    req = wRequester.get();
+                }
+                TopicLists allContactResponse = null;
+                if (jsonObject != null && !TextUtils.isEmpty(jsonObject.toString())) {
+                    Log.v(TAG, "Success : converting Json to Java Object via Gson");
+                    allContactResponse = new Gson().fromJson(jsonObject.toString(), TopicLists.class);
+                }
+
+                if (req != null) {
+                    if (allContactResponse != null) {
+                        req.onSuccess(allContactResponse);
+                    }
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                DataRequester req = null;
+                if (wRequester != null) {
+                    req = wRequester.get();
+                }
+                if (req != null) {
+                    req.onFailure(volleyError);
+                }
+            }
+        };
+
+        // http://172.20.172.49:8989/users/5711e13ed4c6f0df5adf8a17/attempted_topics
+        Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
+        builder.appendPath("users").appendPath("5711e13ed4c6f0df5adf8a17").appendPath("attempted_topics");
+
+        String url = builder.build().toString();
+        CustomJsonObjectRequest request =
+                new CustomJsonObjectRequest(Request.Method.GET, url, obj, responseListener,
+                        errorListener);
+        addToRequestQueue(request, tag);
+    }
+
 }
