@@ -162,11 +162,8 @@ public class VideoRecordingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            if (intent == null || intent.getData() == null) {
-                return;
-            }
-            Uri videoUri = intent.getData();
-            mVideoView.setVideoURI(videoUri);
+
+            mVideoView.setVideoURI(videoFileUri);
             mVideoView.setVisibility(View.VISIBLE);
             mVideoView.start();
             // hide button once playback starts
@@ -174,7 +171,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
 
             byte[] videoFileData = null;
             try {
-                videoFileData = readBytes(videoUri);
+                videoFileData = readBytes(videoFileUri);
             } catch (IOException e) {
                 Log.e("VideoRecordingActivity", "IO exception : " + e.getMessage());
             }
