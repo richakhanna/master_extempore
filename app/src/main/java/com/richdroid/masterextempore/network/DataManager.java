@@ -189,7 +189,7 @@ public class DataManager {
         };
 
         CustomJsonObjectRequest request =
-                new CustomJsonObjectRequest(Request.Method.POST, BASE_URL, obj, responseListener,
+                new CustomJsonObjectRequest(Request.Method.POST, BASE_URL+"/users", obj, responseListener,
                         errorListener);
         addToRequestQueue(request, tag);
     }
