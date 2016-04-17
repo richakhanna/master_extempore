@@ -15,13 +15,13 @@ import com.richdroid.masterextempore.model.Topic;
 import com.richdroid.masterextempore.model.TopicLists;
 import com.richdroid.masterextempore.network.DataManager;
 import com.richdroid.masterextempore.network.DataRequester;
-import com.richdroid.masterextempore.ui.adapter.TryListAdapter;
+import com.richdroid.masterextempore.ui.adapter.AttemptedListAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
- * Created by harshikesh.kumar on 16/04/16.
+ * Created by richa.khanna on 16/04/16.
  */
 public class VideoListFragment extends Fragment {
     /**
@@ -32,7 +32,7 @@ public class VideoListFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private TryListAdapter mAdapter;
+    private AttemptedListAdapter mAdapter;
     private DataManager mDataMan;
     private ArrayList<Topic> mTopicList;
 
@@ -59,7 +59,7 @@ public class VideoListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mTopicList = new ArrayList<>();
         // specify an adapter
-        mAdapter = new TryListAdapter(getActivity(), mTopicList);
+        mAdapter = new AttemptedListAdapter(getActivity(), mTopicList);
         mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }

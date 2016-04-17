@@ -5,4 +5,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_video_recording">VideoRecordingActivity</string>
     <string name="server_client_id">886144289774-1cf0suocc60o24stlhoam7hmj11s1fq7.apps.googleusercontent.com</string>
+    <string name="title_activity_attempted_video_activiy">AttemptedVideoActiviy</string>
+    <string name="title_activity_attempted_video_play">AttemptedVideoPlayActivity</string>
 </resources>
