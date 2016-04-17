@@ -3,16 +3,14 @@ package com.richdroid.masterextempore.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.richdroid.masterextempore.R;
 import com.richdroid.masterextempore.model.Topic;
@@ -63,15 +61,12 @@ public class TryListAdapter extends RecyclerView.Adapter<TryListAdapter.ListView
                     mContext.startActivity(intent);
                     break;
                 case R.id.details_text_view:
-                    WebView mWebview = new WebView(mContext);
-                    mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
-                    mWebview.setWebViewClient(new WebViewClient() {
-                        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                            Toast.makeText(mContext, description, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    if (mTopicList.get(position).getLinks() != null && mTopicList.get(position).getLinks().get(0) != "")
-                        mWebview.loadUrl(mTopicList.get(position).getLinks().get(0));
+
+                    if (mTopicList.get(position).getLinks() != null && mTopicList.get(position).getLinks().get(0) != "") {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mTopicList.get(position).getLinks().get(0)));
+                        mContext.startActivity(browserIntent);
+                    }
+
                     break;
             }
 
