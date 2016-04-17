@@ -24,7 +24,7 @@
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/internet"
-                android:scaleType="fitXY" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/textLayout"
@@ -48,7 +48,7 @@
                     android:paddingTop="@dimen/padding_8dp"
                     android:text="INTERNET"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </FrameLayout>

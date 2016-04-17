@@ -5,9 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import java.io.File;
 
-/**
- * Created by yehya khaled on 3/3/2015.
- */
 public class Utilities {
 
   private static String PAGE0 = "Category";

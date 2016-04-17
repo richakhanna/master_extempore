@@ -186,15 +186,16 @@ public class SplashActivity extends AppCompatActivity
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Onconnectd");
-        findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
-        mRunnable = new Runnable() {
-
-            public void run() {
-                  start();
-            }
-        };
-        mHandler = new Handler();
-        mHandler.postDelayed(mRunnable, SPLASH_TIME);
+        if(bundle !=null) {
+            findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
+            mRunnable = new Runnable() {
+                public void run() {
+                    start();
+                }
+            };
+            mHandler = new Handler();
+            mHandler.postDelayed(mRunnable, SPLASH_TIME);
+        }
 
     }
 

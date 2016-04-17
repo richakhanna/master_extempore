@@ -42,7 +42,20 @@ public class CategoryFragement extends Fragment {
         mContext = getActivity();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.videolistview);
         //mRecyclerView.setHasFixedSize(true);
+
         glm = new GridLayoutManager(mContext, 3);
+
+        glm.setSpanSizeLookup( new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch(position) {
+                    case 6:
+                        return 3;
+                    default:
+                        return 1;
+                }
+            }
+        });
         glm.setOrientation(GridLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(glm);
