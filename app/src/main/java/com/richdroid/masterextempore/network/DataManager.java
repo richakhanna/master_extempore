@@ -31,6 +31,7 @@ public class DataManager {
     private static DataManager mInstance;
     private Context mContext;
     private RequestQueue mRequestQueue;
+    private SharedPreferences mPref;
 
     private DataManager(Context context) {
         mContext = context;
@@ -162,7 +163,7 @@ public class DataManager {
                 Log.v(TAG, "Success : get topic returned a response");
                 SharedPreferences.Editor editor = pref.edit();
                 try {
-                    editor.putString("id", jsonObject.getString("id"));
+                    editor.putString("id", jsonObject.getString("userId"));
                 } catch (Exception e) {
 
                 }
@@ -235,8 +236,10 @@ public class DataManager {
         };
 
         // http://172.20.172.49:8989/users/5711e13ed4c6f0df5adf8a17/attempted_topics
+        mPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String userid = mPref.getString("id","5711e13ed4c6f0df5adf8a17");
         Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
-        builder.appendPath("users").appendPath("5711e13ed4c6f0df5adf8a17").appendPath("attempted_topics");
+        builder.appendPath("users").appendPath(userid).appendPath("attempted_topics");
 
         String url = builder.build().toString();
         CustomJsonObjectRequest request =

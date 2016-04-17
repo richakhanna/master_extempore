@@ -162,7 +162,7 @@ public class VideoRecordingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            if(intent ==null || intent.getData() == null){
+            if (intent == null || intent.getData() == null) {
                 return;
             }
             Uri videoUri = intent.getData();

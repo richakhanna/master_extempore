@@ -3,8 +3,10 @@ package com.richdroid.masterextempore.ui.activity;
 import android.accounts.AccountManager;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +40,7 @@ public class SplashActivity extends AppCompatActivity
     private static final long SPLASH_TIME = 2000;
     private static final int RC_SIGN_IN = 2;
     private static final String TAG = SplashActivity.class.getSimpleName();
+    private static final String LOGIN = "login";
     private ImageView image;
     private Runnable mRunnable;
     private Handler mHandler;
@@ -45,10 +48,14 @@ public class SplashActivity extends AppCompatActivity
     private AccountManager mAccountManager;
     private AppController mDataMan;
     //AIzaSyB8IO0yqYVzF2kn9Elqt-Xi9Hv7c8OVb7Q
-
+    private SharedPreferences mPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(mPref.getBoolean(LOGIN,false)){
+            start();
+        }
         setContentView(R.layout.acitivity_splash);
         image = (ImageView) findViewById(R.id.splash_image);
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(image, "scaleX", 1.0f, 1.2f);
@@ -131,6 +138,10 @@ public class SplashActivity extends AppCompatActivity
             }catch (Exception e){
 
             }
+            mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = mPref.edit();
+            editor.putBoolean(LOGIN,true);
+            editor.commit();
             mDataMan = ((AppController)getApplication());
             mDataMan.getDataManager().postUserData(new WeakReference<DataRequester>(new DataRequester() {
                 @Override
@@ -196,7 +207,6 @@ public class SplashActivity extends AppCompatActivity
             mHandler = new Handler();
             mHandler.postDelayed(mRunnable, SPLASH_TIME);
         }
-
     }
 
     @Override
