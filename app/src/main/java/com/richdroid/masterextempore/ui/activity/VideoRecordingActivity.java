@@ -193,12 +193,12 @@ public class VideoRecordingActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                final String BASE_URL = "http://172.20.172.49:8989";
+                final String BASE_URL = DataManager.BASE_URL;
                 // /users/{userId}/topics/{topicId}/videos?filename=testVideoName
 
 
                 SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-                String userId = mPref.getString("id", "5713129fe07be96b5dac8d7d");
+                String userId = mPref.getString(getString(R.string.user_id_key), getString(R.string.user_id_default_value));
 
                 String paramsUrl = BASE_URL + "/users/" + userId + "/topics/" + topicId + "/videos?filename=" + videoFileName;
                 MultipartRequest multipartRequest = new MultipartRequest(paramsUrl, null, mimeType, multipartBody, new Response.Listener<NetworkResponse>() {

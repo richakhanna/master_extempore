@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.richdroid.masterextempore.R;
 import com.richdroid.masterextempore.model.TopicLists;
 import com.richdroid.masterextempore.utils.Utilities;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class DataManager {
 
     private static final String TAG = DataManager.class.getSimpleName();
-    private static final String BASE_URL = "http://172.20.172.49:8989";
+    public static final String BASE_URL = "http://10.20.103.17:8989";
     private static DataManager mInstance;
     private Context mContext;
     private RequestQueue mRequestQueue;
@@ -153,21 +154,25 @@ public class DataManager {
     }
 
     public void postUserData(final WeakReference<DataRequester> wRequester, JSONObject obj, String tag) {
-        Log.v(TAG, "Api call : get topic lists");
+        Log.v(TAG, "Api call : post user data");
         final SharedPreferences pref =
                 PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
 
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.v(TAG, "Success : get topic returned a response");
+                Log.v(TAG, "Success : post user data returned a response");
                 SharedPreferences.Editor editor = pref.edit();
-                try {
-                    editor.putString("id", jsonObject.getString("userId"));
-                } catch (Exception e) {
 
+                try {
+                    String userId = jsonObject.getString("userId");
+                    Log.v(TAG, "Success : obtained userId : " + userId);
+                    editor.putString(mContext.getString(R.string.user_id_key), jsonObject.getString("userId"));
+                    editor.commit();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
                 }
-                editor.commit();
+
                 DataRequester req = null;
                 if (wRequester != null) {
                     req = wRequester.get();
@@ -179,6 +184,7 @@ public class DataManager {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                Log.v(TAG, "Error : post user data failed");
                 DataRequester req = null;
                 if (wRequester != null) {
                     req = wRequester.get();
@@ -190,7 +196,7 @@ public class DataManager {
         };
 
         CustomJsonObjectRequest request =
-                new CustomJsonObjectRequest(Request.Method.POST, BASE_URL+"/users", obj, responseListener,
+                new CustomJsonObjectRequest(Request.Method.POST, BASE_URL + "/users", obj, responseListener,
                         errorListener);
         addToRequestQueue(request, tag);
     }
@@ -203,7 +209,7 @@ public class DataManager {
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.v(TAG, "Success : get topic returned a response");
+                Log.v(TAG, "Success : get attempted topic list returned a response");
                 DataRequester req = null;
                 if (wRequester != null) {
                     req = wRequester.get();
@@ -225,6 +231,7 @@ public class DataManager {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                Log.v(TAG, "Error : get attempted topic list failed");
                 DataRequester req = null;
                 if (wRequester != null) {
                     req = wRequester.get();
@@ -237,9 +244,10 @@ public class DataManager {
 
         // http://172.20.172.49:8989/users/5711e13ed4c6f0df5adf8a17/attempted_topics
         mPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String userid = mPref.getString("id","5713129fe07be96b5dac8d7d");
+        String userId = mPref.getString(mContext.getString(R.string.user_id_key),
+                mContext.getString(R.string.user_id_default_value));
         Uri.Builder builder = Uri.parse(BASE_URL).buildUpon();
-        builder.appendPath("users").appendPath(userid).appendPath("attempted_topics");
+        builder.appendPath("users").appendPath(userId).appendPath("attempted_topics");
 
         String url = builder.build().toString();
         CustomJsonObjectRequest request =

@@ -7,4 +7,7 @@
     <string name="server_client_id">886144289774-1cf0suocc60o24stlhoam7hmj11s1fq7.apps.googleusercontent.com</string>
     <string name="title_activity_attempted_video_activiy">AttemptedVideoActiviy</string>
     <string name="title_activity_attempted_video_play">AttemptedVideoPlayActivity</string>
+
+    <string name="user_id_key">id</string>
+    <string name="user_id_default_value">12345</string>
 </resources>
